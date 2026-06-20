@@ -1,0 +1,14 @@
+{
+  "name": "Amp Academy — Residential Estimating",
+  "short_name": "Estimating",
+  "description": "Residential electrical estimating quick class + estimator tool — Amp Academy. Installable, offline.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0D1B2A",
+  "theme_color": "#0D1B2A",
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

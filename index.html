@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<!-- Amp Academy — Residential Estimating (quick class + tool) :: first course through aa_course_surface v1 :: 2026-06-18 -->
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Residential Estimating — Amp Academy</title>
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0D1B2A">
+<link rel="apple-touch-icon" href="icons/icon.svg">
+<style>
+:root{--navy:#0D1B2A;--navy2:#11263b;--amber:#F4A300;--ink:#e8eef5;--muted:#9db4cc;--line:#1b3a57;--paper:#f4f6f9}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--paper);color:#16202b}
+.app{display:flex;min-height:100vh}
+.sidebar{width:264px;background:var(--navy);color:var(--ink);flex-shrink:0;position:sticky;top:0;max-height:100vh;overflow-y:auto}
+.brand{padding:18px;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:center}
+.brand .logo{width:34px;height:34px;border-radius:8px;background:var(--amber);color:var(--navy);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px}
+.brand h1{font-size:14px;margin:0;font-weight:800}.brand .sub{font-size:11px;color:var(--muted);font-family:ui-monospace,monospace}
+.nav a{display:block;padding:10px 18px;color:var(--ink);text-decoration:none;font-size:13px;border-left:3px solid transparent;cursor:pointer}
+.nav a:hover{background:var(--navy2)}.nav a.active{background:var(--navy2);border-left-color:var(--amber);color:var(--amber)}
+.nav .mn{color:var(--muted);font-family:ui-monospace,monospace;font-size:11px;margin-right:8px}
+.main{flex:1;max-width:920px;margin:0 auto;padding:26px 28px 90px;width:100%}
+.panel{display:none}.panel.active{display:block}
+.phd{background:linear-gradient(135deg,var(--navy),#143049);color:#fff;border-radius:12px;padding:18px 20px;margin-bottom:18px}
+.phd .badge{display:inline-block;background:var(--amber);color:var(--navy);font-weight:800;font-size:11px;padding:3px 10px;border-radius:20px;letter-spacing:.04em}
+.phd h2{margin:8px 0 4px;font-size:22px}
+h3{font-size:16px;margin:18px 0 8px}
+p,li{line-height:1.6;font-size:15px}
+.note{background:#fff8e8;border:1px solid #d8a200;border-radius:10px;padding:12px 16px;font-size:14px;line-height:1.5;margin:14px 0}
+.note strong{color:#7a5a00}
+.card{background:#fff;border:1px solid #e3e8ef;border-radius:10px;padding:16px 18px;margin:14px 0}
+table.calc{width:100%;border-collapse:collapse;font-size:14px;background:#fff;border-radius:10px;overflow:hidden}
+table.calc th,table.calc td{padding:7px 9px;border-bottom:1px solid #eef1f5;text-align:left}
+table.calc th{background:var(--navy);color:#fff;font-size:12px;font-weight:700}
+table.calc td.num,table.calc th.num{text-align:right;font-variant-numeric:tabular-nums}
+table.calc input{width:100%;border:1px solid #d4dae2;border-radius:6px;padding:6px 7px;font-size:13px;font-family:inherit}
+table.calc input.q,table.calc input.u{text-align:right}
+.lineitem-name input{border-color:transparent;background:transparent;font-weight:500}
+.lineitem-name input:focus{border-color:#d4dae2;background:#fff}
+.del{background:none;border:0;color:#c0392b;cursor:pointer;font-size:15px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin:14px 0}
+.fld{display:flex;flex-direction:column;gap:3px;font-size:12px;color:#5a6b7b}
+.fld input{border:1px solid #d4dae2;border-radius:6px;padding:7px 8px;font-size:13px;font-family:inherit}
+.btn{background:var(--amber);color:var(--navy);border:0;border-radius:8px;padding:9px 16px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn.ghost{background:#fff;border:1px solid #cdd5df;color:#16202b}
+.cust{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
+.cust .fld input{width:100%}
+.totals{margin-top:14px;display:grid;grid-template-columns:1fr;gap:6px;max-width:420px;margin-left:auto}
+.totrow{display:flex;justify-content:space-between;padding:6px 10px;font-size:14px;border-bottom:1px solid #eef1f5}
+.totrow.grand{background:var(--navy);color:var(--amber);border-radius:8px;font-weight:800;font-size:17px}
+.totrow.sub{color:#5a6b7b}
+.pay{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.paycard{background:var(--navy2);color:#fff;border-radius:8px;padding:12px;text-align:center}
+.paycard .v{font-size:18px;font-weight:800;color:var(--amber)}.paycard .l{font-size:11px;color:var(--muted);margin-top:2px}
+.hamb{display:none}
+.printhead{display:none}
+@media(max-width:760px){.sidebar{position:fixed;left:-280px;top:0;bottom:0;z-index:50;transition:left .2s}.sidebar.open{left:0}
+ .hamb{display:flex;position:fixed;top:12px;left:12px;z-index:60;background:var(--navy);color:#fff;border:0;border-radius:8px;width:42px;height:42px;align-items:center;justify-content:center;font-size:20px}
+ .main{padding-top:64px}.cust{grid-template-columns:1fr}.pay{grid-template-columns:1fr}}
+@media print{
+ .sidebar,.hamb,.toolbar,.del,.nav,.btn,#aa-install{display:none!important}
+ .main{max-width:100%;padding:0}.app{display:block}
+ .panel{display:none!important}#p-tool{display:block!important}
+ table.calc input{border:0;background:transparent;padding:2px}
+ .printhead{display:block;margin-bottom:14px}
+ .col-cost,.col-cost-h{display:none}  /* hide internal parts cost on the customer printout */
+}
+</style></head>
+<body>
+<button class="hamb" onclick="document.getElementById('sb').classList.toggle('open')" aria-label="Menu">&#9776;</button>
+<div class="app">
+  <aside class="sidebar" id="sb">
+    <div class="brand"><div class="logo">&#9889;</div><div><h1>Amp Academy</h1><div class="sub">AA-EST · Residential Estimating</div></div></div>
+    <nav class="nav" id="nav">
+      <a data-t="welcome" onclick="show('welcome')"><span class="mn">00</span>Welcome</a>
+      <a data-t="method" onclick="show('method')"><span class="mn">01</span>The line-item method</a>
+      <a data-t="markup" onclick="show('markup')"><span class="mn">02</span>Labor &amp; markup</a>
+      <a data-t="tax" onclick="show('tax')"><span class="mn">03</span>Tax &amp; payment schedule</a>
+      <a data-t="using" onclick="show('using')"><span class="mn">04</span>Using the tool</a>
+      <a data-t="tool" onclick="show('tool')"><span class="mn">▸</span><strong>Estimator Tool</strong></a>
+      <a data-t="about" onclick="show('about')"><span class="mn">ℹ</span>About this estimate</a>
+    </nav>
+  </aside>
+  <main class="main" id="main">
+
+  <div class="panel" id="p-welcome">
+    <div class="phd"><span class="badge">Quick Class</span><h2>Residential Electrical Estimating</h2></div>
+    <p>A short, practical class on building a clean residential electrical estimate — plus a working
+       estimator you can use on a real job today. It installs to your device and runs fully offline; nothing
+       you type leaves your phone or laptop.</p>
+    <h3>What you'll get</h3>
+    <ul>
+      <li>The <strong>line-item method</strong>: price the job piece by piece instead of guessing a number.</li>
+      <li>How <strong>labor &amp; markup</strong> turn your parts cost into a customer price.</li>
+      <li><strong>Tax</strong> and a clean <strong>50 / 40 / 10 payment schedule</strong>.</li>
+      <li>The <strong>Estimator Tool</strong> — fill it in, print a professional estimate, export a CSV.</li>
+    </ul>
+    <div class="note"><strong>This is a method, not a code rule.</strong> Prices, markup, and tax here are
+      starting points from a real working spreadsheet — your costs and local tax will differ. Edit everything.
+      An estimate is not a binding quote or contract.</div>
+  </div>
+
+  <div class="panel" id="p-method">
+    <div class="phd"><span class="badge">Lesson 01</span><h2>The line-item method</h2></div>
+    <p>Good estimates aren't one big guess — they're a list. Every estimate is a table of items, each with a
+       unit cost and a quantity. Multiply and you get the <em>extended</em> cost for that line; add the lines
+       and you get the parts cost for the whole job.</p>
+    <div class="card"><strong>Extended = Unit cost × Quantity.</strong><br>
+      Example: Breakers at $30 each, 24 of them → 30 × 24 = <strong>$720</strong>.</div>
+    <p>Build your item list once (the tool ships with a common residential set — weatherhead, main cable,
+       meter base, panel, breakers, ground, kitchen/bath lines, range, water heater, dryer, A/C, receptacles,
+       switches, lights, EV charger, mini-split, and more), then just set quantities per job. Add custom lines
+       for anything unusual.</p>
+  </div>
+
+  <div class="panel" id="p-markup">
+    <div class="phd"><span class="badge">Lesson 02</span><h2>Labor &amp; markup</h2></div>
+    <p>Your parts cost is what <em>you</em> pay. The customer price has to cover labor, overhead, and profit.
+       The simplest way to handle that is a <strong>markup multiplier</strong> applied to each line.</p>
+    <div class="card"><strong>Line price = Extended × markup.</strong><br>
+      A markup of <strong>1.125</strong> adds 12.5%. A markup of <strong>1.5</strong> adds 50%. Set it to match
+      your real labor and margin — many shops are well above 1.5 once labor is fully loaded.</div>
+    <div class="note"><strong>Honest note:</strong> the source spreadsheets used markups of 1.1 and 1.125.
+      Those are low if the multiplier is meant to cover labor <em>and</em> margin — treat the default as a
+      placeholder and set your own. The tool makes markup a single editable field.</div>
+  </div>
+
+  <div class="panel" id="p-tax">
+    <div class="phd"><span class="badge">Lesson 03</span><h2>Tax &amp; the payment schedule</h2></div>
+    <p>Add sales tax (where it applies) to the marked-up price, not to your raw parts cost. The tool defaults
+       to 6% — set your local rate.</p>
+    <div class="card"><strong>Total = (sum of line prices) + tax.</strong><br>
+      Then stage the cash flow so you're never funding the job out of pocket.</div>
+    <h3>A clean schedule</h3>
+    <ul><li><strong>50% deposit</strong> — parts to the jobsite.</li>
+        <li><strong>40% second payment</strong> — first day of work.</li>
+        <li><strong>10% final</strong> — upon completion.</li></ul>
+  </div>
+
+  <div class="panel" id="p-using">
+    <div class="phd"><span class="badge">Lesson 04</span><h2>Using the tool</h2></div>
+    <ol>
+      <li>Open <strong>Estimator Tool</strong>.</li>
+      <li>Fill the customer block (name, address, phone, email).</li>
+      <li>Set <strong>quantities</strong> on the lines you're using; edit unit costs to your prices; add custom lines.</li>
+      <li>Set your <strong>markup</strong> and <strong>tax rate</strong>.</li>
+      <li>Hit <strong>Print</strong> for a clean customer estimate (your internal parts cost is hidden on the
+          printout), or <strong>Export CSV</strong> to keep records.</li>
+    </ol>
+    <div class="note">Everything stays on your device. Install the class (browser → Install) to use it offline on the truck.</div>
+  </div>
+
+  <!-- ============ THE TOOL ============ -->
+  <div class="panel" id="p-tool">
+    <div class="printhead">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid #0D1B2A;padding-bottom:8px">
+        <div><div style="font-weight:800;font-size:18px">Estimate for Electrical Services</div>
+        <div style="font-size:12px;color:#5a6b7b">Prepared with Amp Academy</div></div>
+        <div style="font-weight:800;color:#0D1B2A">⚡ Amp Academy</div>
+      </div>
+    </div>
+    <div class="phd no-print"><span class="badge">Tool</span><h2>Residential Estimator</h2></div>
+
+    <div class="cust">
+      <div class="fld"><label>Customer name</label><input id="c_name" placeholder="Name"></div>
+      <div class="fld"><label>Phone</label><input id="c_phone" placeholder="Phone"></div>
+      <div class="fld"><label>Address</label><input id="c_addr" placeholder="Street, City, ST ZIP"></div>
+      <div class="fld"><label>Email</label><input id="c_email" placeholder="email@example.com"></div>
+    </div>
+
+    <table class="calc"><thead><tr>
+      <th>Item</th>
+      <th class="num col-cost-h">Unit cost</th>
+      <th class="num">Qty</th>
+      <th class="num col-cost-h">Parts</th>
+      <th class="num">Price</th>
+      <th class="no-print"></th>
+    </tr></thead><tbody id="rows"></tbody></table>
+
+    <div class="toolbar no-print">
+      <button class="btn ghost" onclick="addRow()">+ Add line</button>
+      <div class="fld"><label>Markup (labor + margin)</label><input id="markup" class="u" type="number" step="0.005" value="1.125" oninput="recalc()"></div>
+      <div class="fld"><label>Tax rate %</label><input id="tax" class="u" type="number" step="0.1" value="6" oninput="recalc()"></div>
+      <button class="btn" onclick="window.print()">Print estimate</button>
+      <button class="btn ghost" onclick="exportCSV()">Export CSV</button>
+    </div>
+
+    <div class="totals">
+      <div class="totrow sub col-cost"><span>Parts (your cost)</span><span id="t_parts">$0</span></div>
+      <div class="totrow"><span>Price (parts × markup)</span><span id="t_price">$0</span></div>
+      <div class="totrow"><span>Tax <span id="t_taxpct">6%</span></span><span id="t_tax">$0</span></div>
+      <div class="totrow grand"><span>Pricing Estimate</span><span id="t_total">$0</span></div>
+    </div>
+
+    <div class="pay">
+      <div class="paycard"><div class="v" id="p1">$0</div><div class="l">50% Deposit · parts to jobsite</div></div>
+      <div class="paycard"><div class="v" id="p2">$0</div><div class="l">40% · 1st day of work</div></div>
+      <div class="paycard"><div class="v" id="p3">$0</div><div class="l">10% · upon completion</div></div>
+    </div>
+
+    <div style="margin-top:24px;border-top:1px solid #d4dae2;padding-top:14px;font-size:13px;color:#5a6b7b">
+      Approval: ________________________________  Date: ____________
+    </div>
+  </div>
+
+  <div class="panel" id="p-about">
+    <div class="phd"><span class="badge">About</span><h2>About this estimate</h2></div>
+    <div class="note"><strong>How the math works.</strong> Each line: Parts = unit cost × qty. Line price =
+      Parts × markup. Pricing Estimate = sum of line prices + tax (tax applies to the marked-up price). Payment
+      schedule is 50 / 40 / 10 of the Pricing Estimate.</div>
+    <p style="font-size:14px;color:#5a6b7b">Note on the source sheets: two of the originals computed the total
+       slightly differently (one added raw parts <em>and</em> the marked-up price, which double-counts). This
+       tool uses the clean model above — the marked-up price already includes labor &amp; margin. Confirm the
+       markup and tax match your business before sending an estimate. This is an estimating aid, not a binding
+       quote or contract.</p>
+    <p style="font-size:13px;color:#9aa7b4">Amp Academy · AA-EST · built on the aa_course_surface · 2026-06-18 ·
+       offline, no data leaves your device.</p>
+  </div>
+
+  </main>
+</div>
+
+<script>
+var ITEMS = [
+ ["Weatherhead",95],["Main Cable (per ft)",20],["Meter Base",350],["Main Panel",350],["Breakers",30],
+ ["2-pole Breakers",85],["Ground System (per ft)",15],["Kitchen Lines",500],["Bathroom Lines",500],
+ ["Range",150],["Water Heater",150],["Dryer",250],["Heater",250],["Air Conditioner",250],
+ ["Receptacles",40],["Switches",55],["Lights",150],["Recessed Lights",200],["Ceiling Fan",350],
+ ["EV Home Charge Station",599],["Mini-Split (2 zones)",5599]
+];
+function money(n){return "$"+(Math.round(n)).toLocaleString("en-US");}
+function rowHTML(name,unit,qty){
+  return '<tr>'+
+    '<td class="lineitem-name"><input value="'+name.replace(/"/g,"&quot;")+'" oninput="recalc()"></td>'+
+    '<td class="num col-cost"><input class="u" type="number" min="0" step="1" value="'+unit+'" oninput="recalc()"></td>'+
+    '<td class="num"><input class="q" type="number" min="0" step="1" value="'+qty+'" oninput="recalc()"></td>'+
+    '<td class="num col-cost ext">$0</td>'+
+    '<td class="num price">$0</td>'+
+    '<td class="no-print"><button class="del" onclick="this.closest(\'tr\').remove();recalc()" title="Remove">&times;</button></td>'+
+  '</tr>';
+}
+function addRow(name,unit,qty){
+  var tb=document.getElementById('rows');
+  tb.insertAdjacentHTML('beforeend', rowHTML(name||"Custom item", unit==null?0:unit, qty==null?0:qty));
+  recalc();
+}
+function recalc(){
+  var markup=parseFloat(document.getElementById('markup').value)||0;
+  var taxpct=parseFloat(document.getElementById('tax').value)||0;
+  var parts=0, price=0;
+  document.querySelectorAll('#rows tr').forEach(function(tr){
+    var u=parseFloat(tr.querySelector('.u').value)||0;
+    var q=parseFloat(tr.querySelector('.q').value)||0;
+    var ext=u*q; var pr=ext*markup;
+    tr.querySelector('.ext').textContent=money(ext);
+    tr.querySelector('.price').textContent=money(pr);
+    parts+=ext; price+=pr;
+  });
+  var tax=price*(taxpct/100); var total=price+tax;
+  document.getElementById('t_parts').textContent=money(parts);
+  document.getElementById('t_price').textContent=money(price);
+  document.getElementById('t_taxpct').textContent=(taxpct||0)+"%";
+  document.getElementById('t_tax').textContent=money(tax);
+  document.getElementById('t_total').textContent=money(total);
+  document.getElementById('p1').textContent=money(total*0.5);
+  document.getElementById('p2').textContent=money(total*0.4);
+  document.getElementById('p3').textContent=money(total*0.1);
+}
+function exportCSV(){
+  var rows=[["Item","Unit cost","Qty","Parts","Price"]];
+  document.querySelectorAll('#rows tr').forEach(function(tr){
+    var name=tr.querySelector('.lineitem-name input').value;
+    var u=parseFloat(tr.querySelector('.u').value)||0;
+    var q=parseFloat(tr.querySelector('.q').value)||0;
+    var markup=parseFloat(document.getElementById('markup').value)||0;
+    rows.push([name,u,q,(u*q).toFixed(2),(u*q*markup).toFixed(2)]);
+  });
+  rows.push([]);
+  rows.push(["Customer",document.getElementById('c_name').value]);
+  rows.push(["Pricing Estimate",document.getElementById('t_total').textContent]);
+  var csv=rows.map(function(r){return r.map(function(c){var s=(""+c);return /[",]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}).join(",");}).join("\n");
+  var blob=new Blob([csv],{type:"text/csv"}); var a=document.createElement("a");
+  a.href=URL.createObjectURL(blob); a.download="electric-estimate.csv"; a.click();
+}
+function show(id){
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('#nav a').forEach(function(a){a.classList.remove('active');});
+  var p=document.getElementById('p-'+id); if(p)p.classList.add('active');
+  var a=document.querySelector('#nav a[data-t="'+id+'"]'); if(a)a.classList.add('active');
+  window.scrollTo(0,0); var sb=document.getElementById('sb'); if(sb)sb.classList.remove('open');
+}
+// build default rows
+ITEMS.forEach(function(it){ addRow(it[0],it[1],0); });
+recalc();
+show('welcome');
+// PWA
+if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(function(){});
+(function(){var d=null;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();d=e;var b=document.getElementById('aa-install');if(!b){b=document.createElement('button');b.id='aa-install';b.textContent='Install';b.style.cssText='position:fixed;right:14px;bottom:14px;z-index:300;background:#F4A300;color:#0D1B2A;border:0;border-radius:10px;padding:10px 16px;font-weight:700;cursor:pointer';document.body.appendChild(b);}b.style.display='block';b.onclick=function(){b.style.display='none';if(d){d.prompt();d=null;}};});})();
+</script>
+</body></html>
