@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <!-- Amp Academy — Residential Estimating (quick class + tool) :: first course through aa_course_surface v1 :: 2026-06-18 -->
-<html lang="en"><head>
+<html lang="en" data-theme="light"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Residential Estimating — Amp Academy</title>
-<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0D1B2A">
+<title>Residential Estimating — Amp Academy</title><meta name="theme-color" content="#0D1B2A">
 <link rel="apple-touch-icon" href="icons/icon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#0D1B2A;--navy2:#11263b;--amber:#F4A300;--ink:#e8eef5;--muted:#9db4cc;--line:#1b3a57;--paper:#f4f6f9}
+:root{--navy:#0D1B2A;--navy2:#11263b;--amber:#F2A93B;--ink:#e8eef5;--muted:#9db4cc;--line:#1b3a57;--paper:#f4f6f9}
 *{box-sizing:border-box}
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--paper);color:#16202b}
 .app{display:flex;min-height:100vh}
@@ -63,8 +63,11 @@ table.calc input.q,table.calc input.u{text-align:right}
  .printhead{display:block;margin-bottom:14px}
  .col-cost,.col-cost-h{display:none}  /* hide internal parts cost on the customer printout */
 }
-</style></head>
+h1,h2,h3,h4{font-family:"Syne",sans-serif!important}body{font-family:"Inter",sans-serif!important}
+</style><style id="aa-theme">html[data-theme="dark"]{--paper:#0E1422}html[data-theme="dark"] body{background:#0E1422;color:#EAEEF6}.aa-tgl{position:fixed;top:10px;right:12px;z-index:99999;font-size:15px;line-height:1;background:rgba(20,30,50,.55);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:7px 10px;cursor:pointer}</style>
+</head>
 <body>
+<button class="aa-tgl" onclick="aaTgl()" aria-label="Toggle light or dark">◐</button>
 <button class="hamb" onclick="document.getElementById('sb').classList.toggle('open')" aria-label="Menu">&#9776;</button>
 <div class="app">
   <aside class="sidebar" id="sb">
@@ -293,6 +296,7 @@ recalc();
 show('welcome');
 // PWA
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(function(){});
-(function(){var d=null;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();d=e;var b=document.getElementById('aa-install');if(!b){b=document.createElement('button');b.id='aa-install';b.textContent='Install';b.style.cssText='position:fixed;right:14px;bottom:14px;z-index:300;background:#F4A300;color:#0D1B2A;border:0;border-radius:10px;padding:10px 16px;font-weight:700;cursor:pointer';document.body.appendChild(b);}b.style.display='block';b.onclick=function(){b.style.display='none';if(d){d.prompt();d=null;}};});})();
+(function(){var d=null;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();d=e;var b=document.getElementById('aa-install');if(!b){b=document.createElement('button');b.id='aa-install';b.textContent='Install';b.style.cssText='position:fixed;right:14px;bottom:14px;z-index:300;background:#F2A93B;color:#0D1B2A;border:0;border-radius:10px;padding:10px 16px;font-weight:700;cursor:pointer';document.body.appendChild(b);}b.style.display='block';b.onclick=function(){b.style.display='none';if(d){d.prompt();d=null;}};});})();
 </script>
+<script>function aaTgl(){var h=document.documentElement,d=h.getAttribute("data-theme")==="dark";h.setAttribute("data-theme",d?"light":"dark");try{localStorage.setItem("aa.theme",d?"light":"dark")}catch(e){}}(function(){try{var t=localStorage.getItem("aa.theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}})();</script>
 </body></html>
